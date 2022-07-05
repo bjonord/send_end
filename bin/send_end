@@ -22,7 +22,9 @@ class SendEnd < Thor
         key:
       )
 
-      puts object.presigned_url(:get, expires_in: 300)
+      url = object.presigned_url(:get, expires_in: 300)
+      puts url
+      system "echo '#{url}' | pbcopy"
     end
   end
 
@@ -33,7 +35,9 @@ class SendEnd < Thor
     object = bucket.object(key)
 
     if object.exists?
-      puts object.presigned_url(:get, expires_in: 300)
+      url = object.presigned_url(:get, expires_in: 300)
+      puts url
+      system "echo '#{url}' | pbcopy"
     else
       puts "#{key} does not exist."
     end
