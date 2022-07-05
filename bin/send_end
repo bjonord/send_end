@@ -23,7 +23,12 @@ class SendEnd < Thor
       )
 
       url = object.presigned_url(:get, expires_in: 300)
+      puts '=' * 20
       puts url
+      puts '=' * 20
+      puts 'To use in a Ruby console: '
+      puts "require 'open-uri'; contents = URI.open('#{url}', &:read); nil"
+      puts '=' * 20
       system "echo '#{url}' | pbcopy"
     end
   end
@@ -36,7 +41,12 @@ class SendEnd < Thor
 
     if object.exists?
       url = object.presigned_url(:get, expires_in: 300)
+      puts '=' * 20
       puts url
+      puts '=' * 20
+      puts 'To use in a Ruby console: '
+      puts "require 'open-uri'; contents = URI.open('#{url}', &:read); nil"
+      puts '=' * 20
       system "echo '#{url}' | pbcopy"
     else
       puts "#{key} does not exist."
