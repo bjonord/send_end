@@ -1,0 +1,43 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'thor'
+require 'aws-sdk-s3'
+require 'securerandom'
+require 'dotenv/load'
+
+class SendEnd < Thor
+  desc 'upload FILE_PATH BUCKET_NAME PREFIX', 'Upload a file to S3 and get an expiring url to share. Max size is 5GB.'
+  def upload(file_path, bucket = ENV['BUCKET_NAME'], prefix = 'send-end-files')
+    bucket = Aws::S3::Bucket.new(bucket)
+
+    key = "#{prefix}/#{file_path.split('/').last}"
+
+    File.open(file_path, 'rb') do |file|
+      object = bucket.put_object(
+        acl: 'private',
+        body: file,
+        bucket:,
+        server_side_encryption: 'AES256',
+        key:
+      )
+
+      puts object.presigned_url(:get, expires_in: 300)
+    end
+  end
+
+  desc 'expiring_url FILE_PATH BUCKET_NAME PREFIX', 'Generate an expiring url for an existing file.'
+  def expiring_url(file_path, bucket = ENV['BUCKET_NAME'], prefix = 'send-end-files')
+    bucket = Aws::S3::Bucket.new(bucket)
+    key = "#{prefix}/#{file_path.split('/').last}"
+    object = bucket.object(key)
+
+    if object.exists?
+      puts object.presigned_url(:get, expires_in: 300)
+    else
+      puts "#{key} does not exist."
+    end
+  end
+end
+
+SendEnd.start(ARGV)
