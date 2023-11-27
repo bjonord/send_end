@@ -27,7 +27,7 @@ class SendEnd < Thor
       puts url
       puts '=' * 20
       puts 'To use in a Ruby console: '
-      puts "require 'open-uri'; contents = URI.open('#{url}', &:read); nil"
+      puts "require 'open-uri'; contents = URI.open('#{url}', 'r:UTF-8'); nil"
       puts '=' * 20
       system "echo '#{url}' | pbcopy"
     end
@@ -45,7 +45,7 @@ class SendEnd < Thor
       puts url
       puts '=' * 20
       puts 'To use in a Ruby console: '
-      puts "require 'open-uri'; contents = URI.open('#{url}', &:read); nil"
+      puts "require 'open-uri'; contents = URI.open('#{url}', 'r:UTF-8'); nil"
       puts '=' * 20
       system "echo '#{url}' | pbcopy"
     else
