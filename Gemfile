@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '3.1.5'
+ruby '4.0.1'
 
 gem 'aws-sdk-s3'
 gem 'thor'
